@@ -47,10 +47,11 @@ if (contactForm) {
         const formData = new FormData(this);
         const name = formData.get('name');
         const email = formData.get('email');
+        const subject = formData.get('subject');
         const message = formData.get('message');
         
         // Simple validation
-        if (name && email && message) {
+        if (name && email && subject && message) {
             // Show success message
             formSuccess.classList.remove('hidden');
             
@@ -63,7 +64,7 @@ if (contactForm) {
             }, 5000);
             
             // Log form submission (for demo purposes)
-            console.log('Form submitted:', { name, email, message });
+            console.log('Form submitted:', { name, email, subject, message });
         }
     });
 }
@@ -134,6 +135,7 @@ function validateEmail(email) {
 if (contactForm) {
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('name');
+    const subjectInput = document.getElementById('subject');
     const messageInput = document.getElementById('message');
     
     // Email validation
@@ -155,6 +157,17 @@ if (contactForm) {
         } else {
             nameInput.style.borderColor = '#e5e7eb';
             nameInput.setCustomValidity('');
+        }
+    });
+    
+    // Subject validation
+    subjectInput.addEventListener('blur', () => {
+        if (subjectInput.value && subjectInput.value.trim().length < 5) {
+            subjectInput.style.borderColor = '#ef4444';
+            subjectInput.setCustomValidity('Subject must be at least 5 characters long');
+        } else {
+            subjectInput.style.borderColor = '#e5e7eb';
+            subjectInput.setCustomValidity('');
         }
     });
     
@@ -188,16 +201,19 @@ if (contactForm) {
     const submitButton = contactForm.querySelector('.submit-button');
     
     contactForm.addEventListener('submit', function() {
-        submitButton.textContent = 'Sending...';
+        const buttonText = submitButton.querySelector('span');
+        const buttonIcon = submitButton.querySelector('svg');
+        
+        buttonText.textContent = 'Sending...';
         submitButton.disabled = true;
         
         // Simulate form processing
         setTimeout(() => {
-            submitButton.textContent = 'Message Sent!';
+            buttonText.textContent = 'Message Sent!';
             submitButton.style.background = '#10b981';
             
             setTimeout(() => {
-                submitButton.textContent = 'Send Message';
+                buttonText.textContent = 'Send Message';
                 submitButton.style.background = '#1e40af';
                 submitButton.disabled = false;
             }, 2000);
