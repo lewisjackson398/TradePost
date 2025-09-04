@@ -38,7 +38,38 @@ navLinks.forEach(link => {
     });
 });
 
-// Contact Form Handling
+// Function to send email via Formspree (backup method)
+function sendViaFormspree(name, email, subject, message) {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('subject', subject);
+    formData.append('message', message);
+    formData.append('_replyto', email);
+    formData.append('_subject', `New Contact Form Submission - ${subject}`);
+    
+    // Using Formspree endpoint
+    fetch('https://formspree.io/f/mnnbzbdn', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        console.log('Formspree response:', response);
+        if (response.ok) {
+            console.log('Email sent successfully via Formspree');
+        } else {
+            console.log('Formspree error:', response.status);
+        }
+    })
+    .catch(error => {
+        console.error('Formspree error:', error);
+    });
+}
+
+// Contact Form Handling - Enhanced with Logging
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -50,8 +81,47 @@ if (contactForm) {
         const subject = formData.get('subject');
         const message = formData.get('message');
         
+        // Log form submission for debugging
+        console.log('Form submitted with data:', { name, email, subject, message });
+        
         // Simple validation
         if (name && email && subject && message) {
+            // Create email content
+            const emailSubject = `New Contact Form Submission - ${subject}`;
+            const emailBody = `You have received a new message from your TradePost website contact form.
+
+From: ${name}
+Email: ${email}
+Subject: ${subject}
+
+Message:
+${message}
+
+---
+This message was sent from your TradePost website contact form.`;
+
+            // Log the email content
+            console.log('Email subject:', emailSubject);
+            console.log('Email body:', emailBody);
+            
+            // Create mailto link
+            const mailtoLink = `mailto:lewisjackson398@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            console.log('Mailto link:', mailtoLink);
+            
+            // Try to open email client
+            try {
+                window.location.href = mailtoLink;
+                console.log('Email client opened successfully');
+                
+                // Also try to send via Formspree as backup
+                sendViaFormspree(name, email, subject, message);
+                
+            } catch (error) {
+                console.error('Error opening email client:', error);
+                alert('There was an error opening your email client. Please copy this information and email it to lewisjackson398@gmail.com:\n\n' + emailBody);
+            }
+            
             // Show success message
             formSuccess.classList.remove('hidden');
             
@@ -62,9 +132,8 @@ if (contactForm) {
             setTimeout(() => {
                 formSuccess.classList.add('hidden');
             }, 5000);
-            
-            // Log form submission (for demo purposes)
-            console.log('Form submitted:', { name, email, subject, message });
+        } else {
+            console.log('Form validation failed - missing required fields');
         }
     });
 }

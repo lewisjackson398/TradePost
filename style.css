@@ -44,12 +44,10 @@ body {
     height: 70px;
 }
 
-.nav-logo .nav-logo-img {
-    height: 60px;
-    width: auto;
-    max-width: 250px;
-    object-fit: contain;
-    background: transparent;
+.nav-logo h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e40af;
 }
 
 .nav-menu {
@@ -1022,14 +1020,14 @@ body {
     gap: 2rem;
     margin-bottom: 2rem;
     text-align: center;
+    align-items: start;
 }
 
-.footer-logo .footer-logo-img {
-    height: 80px;
-    width: auto;
-    max-width: 280px;
-    object-fit: contain;
-    margin-bottom: 1rem;
+.footer-logo h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #06b6d4;
+    margin-bottom: 0.5rem;
 }
 
 .footer-logo p {
@@ -1109,14 +1107,17 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .nav-logo .nav-logo-img {
-        height: 50px;
-        max-width: 200px;
+    .nav-logo h1 {
+        font-size: 1.5rem;
     }
     
-    .footer-logo .footer-logo-img {
-        height: 60px;
-        max-width: 200px;
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-logo h3 {
+        font-size: 1.8rem;
     }
     
     .hamburger {
@@ -1241,14 +1242,12 @@ body {
 }
 
 @media (max-width: 480px) {
-    .nav-logo .nav-logo-img {
-        height: 45px;
-        max-width: 180px;
+    .nav-logo h1 {
+        font-size: 1.3rem;
     }
     
-    .footer-logo .footer-logo-img {
-        height: 35px;
-        max-width: 110px;
+    .footer-logo h3 {
+        font-size: 1.6rem;
     }
     
     .hero-title {
